@@ -38,7 +38,7 @@ app.post("/sms", function (req, res) {
         const mes = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
-        twiml.message(mes);
+        twiml.message(line.title);
         console.log(mes);
       });
   } else if (req.body.Body === 'help') {
