@@ -12,8 +12,14 @@ app.use(bodyParser.urlencoded({extended: false}));
  
 app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
-  
-  twiml.message('the robots are coming');
+
+  if (req.body.Body == 'shitty') {
+    twiml.message('generic pickup liine');
+  } else if (req.body.Body == 'help') {
+    twiml.message('helping u out');
+  } else {
+    twiml.message('girls name');
+  }
   res.writeHead(200, {'Content-Type': 'text/xml'});
   res.end(twiml.toString());
 });
