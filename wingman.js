@@ -25,9 +25,10 @@ app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
 
   if (req.body.Body === 'shitty') {
+    console.log('SHITTY');
     const curSub = subreddits[getRandNum(subreddits.length)];
 
-    console.log(curSub);
+    console.log('GETTING SUB: ' + curSub);
     reddit.getSubreddit(curSub)
       .getTop({ time: 'all' })
       .then((submission) => {
