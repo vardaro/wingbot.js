@@ -1,0 +1,29 @@
+{
+  "name": "pickuplines",
+  "version": "1.0.0",
+  "description": "sends horrible pickup lines via sms",
+  "main": "wingman.js",
+  "scripts": {
+    "test": "node wingman"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "request": "^2.81.0",
+    "twilio": "^3.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.3.0",
+    "eslint-plugin-node": "^5.1.1",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-nodemon": "^2.2.1",
+    "http": "0.0.0",
+    "nodemon": "^1.11.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  }
+}
