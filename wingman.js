@@ -41,15 +41,16 @@ app.post("/sms", function (req, res) {
           `${line.title}`;
         twiml.message(line.title);
         console.log(mes);
+        res.writeHead(OK, { 'Content-Type': 'text/xml' });
+        res.end(twiml.toString());
+        console.log('RESP SENT');
       });
   } else if (req.body.Body === 'help') {
     twiml.message('helping u out');
   } else {
     twiml.message('girls name');
   }
-  res.writeHead(OK, { 'Content-Type': 'text/xml' });
-  res.end(twiml.toString());
-  console.log('RESP SENT');
+
 });
 
 app.listen(app.get('port'), function () {
