@@ -4,6 +4,7 @@
   "description": "sends horrible pickup lines via sms",
   "main": "wingman.js",
   "scripts": {
+    "start": "node wingman.js",
     "test": "node wingman"
   },
   "author": "",
