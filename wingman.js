@@ -49,6 +49,7 @@ app.post("/sms", function (req, res) {
   }
   res.writeHead(OK, { 'Content-Type': 'text/xml' });
   res.end(twiml.toString());
+  console.log('RESP SENT');
 });
 
 app.listen(app.get('port'), function () {
