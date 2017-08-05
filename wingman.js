@@ -23,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
-  res.writeHead(OK, { 'Content-Type': 'text/xml' });
   const reqBody = req.body.Body.trim().toLowerCase();
   if (reqBody === 'shitty') {
     console.log('POST: SHITTY');
@@ -42,6 +41,7 @@ app.post("/sms", function (req, res) {
           `${line.title}`;
         twiml.message(line.title);
         console.log(mes);
+        res.writeHead(OK, { 'Content-Type': 'text/xml' });
         res.send(twiml.toString());
         console.log('RESP SENT');
       });
