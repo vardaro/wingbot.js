@@ -33,12 +33,12 @@ app.post("/sms", function (req, res) {
       .then((submission) => {
         console.log(submission.length);
         const line = submission[getRandNum(submission.length)];
-        
+
         console.log(line);
         const mes = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
-
+        twiml.message(mes);
         console.log(mes);
       });
   } else if (req.body.Body === 'help') {
