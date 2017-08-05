@@ -23,9 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
-
-  if (req.body.Body === 'shitty') {
-    console.log('SHITTY');
+  res.writeHead(OK, { 'Content-Type': 'text/xml' });
+  const reqBody = req.body.Body.trim().toLowerCase();
+  if (reqBody === 'shitty') {
+    console.log('POST: SHITTY');
     const curSub = subreddits[getRandNum(subreddits.length)];
 
     console.log('GETTING SUB: ' + curSub);
@@ -41,16 +42,15 @@ app.post("/sms", function (req, res) {
           `${line.title}`;
         twiml.message(line.title);
         console.log(mes);
-        res.writeHead(OK, { 'Content-Type': 'text/xml' });
-        res.end(twiml.toString());
+        res.send(twiml.toString());
         console.log('RESP SENT');
       });
-  } else if (req.body.Body === 'help') {
+  } else if (reqBody === 'help') {
     twiml.message('helping u out');
   } else {
     twiml.message('girls name');
   }
-
+  console.log('RES END');
 });
 
 app.listen(app.get('port'), function () {
