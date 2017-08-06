@@ -37,16 +37,17 @@ app.post("/sms", function (req, res) {
         const line = derive(submission);
 
         console.log(line);
-        const mes = line.selftext ?
+        const {message} = twiml;
+        const mesBody = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
 
         if (line.url.includes('imgur') || line.url.includes('reddituploads')) {
-          twiml.message.media(line.url);
+          message.media(line.url);
         }
         
-        twiml.message.body(mes);
-        console.log(mes);
+        message.body(mesBody);
+        console.log(mesBody);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
         res.end(twiml.toString());
         console.log('RESP SENT');
