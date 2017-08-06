@@ -58,7 +58,12 @@ app.post("/sms", function (req, res) {
         .getTop({ time: 'all' , limit: 100})
         .then((submissions) => {
           // grab a random submission
-          const line = extract(submissions);
+          let line = extract(submissions);
+          while (line.selftext > 160) { // cut down the array to find a short line
+            let dex = submissions.indexOf(line);
+            submissions = submissions.splice(dex, 1);
+            line = extract(submissions);
+          }
           const message = twiml.message();
 
           if (line.url.includes('imgur') || line.url.includes('reddituploads') || line.url.includes('i.redd.it')) {
