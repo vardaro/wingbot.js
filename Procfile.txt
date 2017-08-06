@@ -1,1 +1,1 @@
-web: node wingman.js
+web: node wingbot.js

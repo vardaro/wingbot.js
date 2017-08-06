@@ -3,7 +3,7 @@ const nodemon = require('gulp-nodemon');
 const eslint = require('gulp-eslint');
 
 gulp.task('lint', function () {
-    return gulp.src(['wingman.js', '!node_modules/**'])
+    return gulp.src(['wingbotjs', '!node_modules/**'])
         .pipe(eslint())
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
@@ -11,7 +11,7 @@ gulp.task('lint', function () {
 
 gulp.task('ref', function () {
     nodemon({
-        script: 'wingman.js'
+        script: 'wingbot.js'
         , ext: 'js html'
         , env: { 'NODE_ENV': 'development' }
     });
@@ -19,7 +19,7 @@ gulp.task('ref', function () {
 
 gulp.task('default', function () {
     var stream = nodemon({
-        script: 'wingman.js'
+        script: 'wingbot.js'
         , ext: 'html js'
         , ignore: ['ignored.js']
         , tasks: ['lint']

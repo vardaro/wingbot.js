@@ -2,10 +2,10 @@
   "name": "pickuplines",
   "version": "1.0.0",
   "description": "sends horrible pickup lines via sms",
-  "main": "wingman.js",
+  "main": "wingbot.js",
   "scripts": {
-    "start": "node wingman.js",
-    "test": "node wingman"
+    "start": "node wingbot.js",
+    "test": "node wingbot"
   },
   "author": "",
   "license": "ISC",

@@ -37,7 +37,6 @@ const platforms = [
   'Reddit',
   'Twitter'
 ];
-
 app.set('port', process.env.PORT || DEFAULT);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/src'));
@@ -56,7 +55,7 @@ app.post("/sms", function (req, res) {
       // grabs a subreddit
       console.log('GETTING SUB: ' + curSub);
       reddit.getSubreddit(curSub)
-        .getTop({ time: 'all' })
+        .getTop({ time: 'all' , limit: 100})
         .then((submissions) => {
           // grab a random submission
           const line = extract(submissions);
