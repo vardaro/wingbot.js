@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 5000;
 const tweeters = [
   'pickupIines',
   'pickuplines',
-  'smplepickupInes'
+  'smplepickupInes',
+  'ComCorny',
+  'Pickupthatgirl'
 ];
 const subreddits = [
   'ShittyPickupLines',
