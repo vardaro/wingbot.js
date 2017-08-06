@@ -62,6 +62,7 @@ app.post("/sms", function (req, res) {
             let dex = submissions.indexOf(line);
             submissions = submissions.splice(dex, 1);
             line = extract(submissions);
+            console.log("SPLICING");
           }
           const message = twiml.message();
 
