@@ -94,7 +94,7 @@ app.post("/sms", function (req, res) {
       });
     }
   } else {
-    console.log(`GIRLS NAME: ${reqbody}`); // i think
+    console.log(`GIRLS NAME: ${reqBody}`); // i think
     res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
 
     reddit.getSubreddit('PickupLines')
