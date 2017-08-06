@@ -42,15 +42,15 @@ app.post("/sms", function (req, res) {
         twiml.message(line.title);
         console.log(mes);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
-        res.send(twiml.toString());
+        res.end(twiml.toString());
         console.log('RESP SENT');
       });
   } else if (reqBody === 'help') {
     twiml.message('helping u out');
-    res.send(twiml.toString());
+    res.end(twiml.toString());
   } else {
     twiml.message('girls name');
-    res.send(twiml.toString());
+    res.end(twiml.toString());
   }
   console.log('RES END');
 });
