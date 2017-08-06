@@ -15,7 +15,8 @@ const reddit = new snoowrap({
 });
 const subreddits = [
   'ShittyPickupLines',
-  'PickupLines'
+  'PickupLines',
+  'Tinder'
 ];
 
 app.set('port', process.env.PORT || DEFAULT);
@@ -39,6 +40,7 @@ app.post("/sms", function (req, res) {
         const mes = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
+
         twiml.message(mes);
         console.log(mes);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
@@ -52,7 +54,7 @@ app.post("/sms", function (req, res) {
     twiml.message('girls name');
     res.end(twiml.toString());
   }
-  console.log('RES END');
+  console.log('RES END\n');
 });
 
 app.listen(app.get('port'), function () {
