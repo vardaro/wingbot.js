@@ -113,7 +113,6 @@ app.post("/sms", function (req, res) {
               } else {
                 twiml.message('idk haha :/');
               }
-
             });
         } else {
           twiml.message('idk lol');
@@ -123,7 +122,6 @@ app.post("/sms", function (req, res) {
         console.log('RESP SENT');
       });
   }
-  console.log('RES END\n');
 });
 
 app.get('*', function (req, res) {
