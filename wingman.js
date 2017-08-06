@@ -42,8 +42,9 @@ app.post("/sms", function (req, res) {
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
 
-        if (line.url.includes('imgur') || line.url.includes('reddituploads')) {
+        if (line.url.includes('imgur') || line.url.includes('reddituploads') || line.url.includes('i.redd.it')) {
           message.media(line.url);
+          console.log('IMG: ' + line.url);
         }
         
         message.body(mesBody);
