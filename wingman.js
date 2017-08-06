@@ -1,3 +1,5 @@
+// i hope nobody tries to read this
+
 'use strict'
 const express = require('express');
 const twitter = require('twitter');
@@ -49,20 +51,22 @@ app.post("/sms", function (req, res) {
     if (curPlat === 'Reddit') {
       console.log('REDDIT');
       const curSub = cut(subreddits);
-
+      // grabs a subreddit
       console.log('GETTING SUB: ' + curSub);
       reddit.getSubreddit(curSub)
         .getTop({ time: 'all' })
         .then((submissions) => {
+          // grab a random submission
           const line = cut(submissions);
           const message = twiml.message();
 
           if (line.url.includes('imgur') ||
-              line.url.includes('reddituploads') ||
-              line.url.includes('i.redd.it')) {
-              message.media(line.url); // if media, include media
+            line.url.includes('reddituploads') ||
+            line.url.includes('i.redd.it')) {
+            message.media(line.url); // if media, include media
             console.log('IMG: ' + line.url);
           }
+          // build <resp/> using the hip n jive es6 str templating thing
           const mesBody = line.selftext ?
             `${line.title}\n\n${line.selftext}` :
             `${line.title}`;
@@ -73,21 +77,22 @@ app.post("/sms", function (req, res) {
           res.end(twiml.toString());
           console.log('RESP SENT');
         });
-    } else if (curPlat === 'Twitter') {
+    } else if (curPlat === 'Twitter') { // req to twitter pickuplines
       console.log('TWITTER');
-
+      // get a user
       const curUser = cut(tweeters);
       console.log('USER: ' + curUser);
       const request = buildReq(curUser);
-
+      // make the request
       client.get('statuses/user_timeline', request, (err, tweet, resp) => {
         if (err) console.log('WTF');
+        // get a tweet
         const curTweet = cut(tweet);
         twiml.message(curTweet.text);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
         res.end(twiml.toString());
         console.log('RESP SENT');
-      })
+      });
     }
   } else {
     console.log('GIRLS NAME'); // i think
@@ -100,10 +105,15 @@ app.post("/sms", function (req, res) {
           reddit.getSubmission(curSub.id) // focus one 1 submission
             .expandReplies({ limit: Infinity, depth: Infinity })
             .then((withReplies) => {
-              console.log(withReplies);
-              const curRep = cut(withReplies.comments);
-              const twimlResp = `${curSub.title}\n\n${curRep.body}`;
-              twiml.message(twimlResp);
+              if (withReplies.comments) {
+                console.log(withReplies.comments);
+                const curRep = cut(withReplies.comments);
+                const twimlResp = `${curSub.title}\n\n${curRep.body}`;
+                twiml.message(twimlResp);
+              } else {
+                twiml.message('idk haha :/');
+              }
+
             });
         } else {
           twiml.message('idk lol');
