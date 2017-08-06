@@ -31,7 +31,6 @@ const tweeters = [
 const subreddits = [
   'ShittyPickupLines',
   'PickupLines',
-  'Tinder'
 ];
 const platforms = [
   'Reddit',
