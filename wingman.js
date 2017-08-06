@@ -10,7 +10,7 @@ const app = express();
 
 const { env } = process;
 const DEFAULT = 5000;
-const OK = 200;
+const NO_MAGIC_NUMBERS_HEADASS = 200;
 const reddit = new snoowrap({
   clientId: env.clientId,
   clientSecret: env.clientSecret,
@@ -30,7 +30,8 @@ const tweeters = [
 ];
 const subreddits = [
   'ShittyPickupLines',
-  'PickupLines'
+  'PickupLines',
+  'Tinder'
 ];
 const platforms = [
   'Reddit',
@@ -61,9 +62,7 @@ app.post("/sms", function (req, res) {
           const line = extract(submissions);
           const message = twiml.message();
 
-          if (line.url.includes('imgur') ||
-            line.url.includes('reddituploads') ||
-            line.url.includes('i.redd.it')) {
+          if (line.url.includes('imgur') || line.url.includes('reddituploads') || line.url.includes('i.redd.it')) {
             message.media(line.url); // if media, include media
             console.log('IMG: ' + line.url);
           }
@@ -71,14 +70,14 @@ app.post("/sms", function (req, res) {
           const mesBody = line.selftext ?
             `${line.title}\n\n${line.selftext}` :
             `${line.title}`;
-
+          // send
           message.body(mesBody);
           console.log(mesBody);
-          res.writeHead(OK, { 'Content-Type': 'text/xml' });
+          res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
           res.end(twiml.toString());
           console.log('RESP SENT');
         });
-    } else if (curPlat === 'Twitter') { // req to twitter pickuplines
+    } else if (curPlat === 'Twitter') { // req to twitter
       console.log('TWITTER');
       // get a user
       const curUser = extract(tweeters);
@@ -90,14 +89,14 @@ app.post("/sms", function (req, res) {
         // get a tweet
         const curTweet = extract(tweet);
         twiml.message(curTweet.text);
-        res.writeHead(OK, { 'Content-Type': 'text/xml' });
+        res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
         res.end(twiml.toString());
         console.log('RESP SENT');
       });
     }
   } else {
-    console.log('GIRLS NAME'); // i think
-    res.writeHead(OK, { 'Content-Type': 'text/xml' });
+    console.log(`GIRLS NAME: ${reqbody}`); // i think
+    res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
 
     reddit.getSubreddit('PickupLines')
       .search({ query: reqBody, time: 'all', sort: 'relavance' })
@@ -121,7 +120,7 @@ app.post("/sms", function (req, res) {
               }
             });
         } else {
-          twiml.message('idk lol');
+          twiml.message(`idk a girl named ${reqBody}`);
           res.end(twiml.toString());
           console.log('RESP SENT');
         }
