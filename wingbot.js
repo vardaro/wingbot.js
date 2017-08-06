@@ -58,7 +58,7 @@ app.post("/sms", function (req, res) {
         .then((submissions) => {
           // grab a random submission
           let line = extract(submissions);
-          while (line.selftext > 160) { // cut down the array to find a short line
+          while (line.selftext.length > 160) { // cut down the array to find a short line
             let dex = submissions.indexOf(line);
             submissions = submissions.splice(dex, 1);
             line = extract(submissions);
@@ -70,7 +70,6 @@ app.post("/sms", function (req, res) {
             message.media(line.url); // if media, include media
             console.log('IMG: ' + line.url);
           }
-          // build <resp/> using the hip n jive es6 str templating thing
           const mesBody = line.selftext ?
             `${line.title}\n\n${line.selftext}` :
             `${line.title}`;
