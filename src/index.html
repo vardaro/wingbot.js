@@ -1,20 +1,83 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    </head>
-    <body>
-        <!--[if lte IE 9]>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">   
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <style>
+        html,
+        body,
+        .view {
+            height: 100%;
+            font-family: 'Roboto', sans-serif !important;
+                -webkit-font-smoothing: antialiased;
+        }
+        /*Call to action*/
+
+        .flex-center {
+            color: #fff;
+        }
+        .my-h1 {
+            font-weight: 300 !important;
+            font-size: 12rem;
+        }
+        .view {
+            background: url('./img/dtse19.jpg')no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .left-info {
+            text-align: left;
+            padding-top: 5%;
+            padding-bottom: 5%;
+        }
+
+        .left-info-p {
+            font-weight: 100;
+            font-size: 2rem;
+        } 
+        .content {
+            margin-top: 28rem;
+        }
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+        a:hover, a:visited {
+            color: #fff;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!--[if lte IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
         <![endif]-->
+    <!--Mask-->
+    <div class="view hm-black-strong">
+        <div class="full-bg-img flex-center">
+            <div class="animated fadeInUp">
+                <div class="container">
+                    <div class="row text-center content">
+                        <h2 class="h1 my-h1">wingbot.js</h2>
+                        <p class="left-info-p text-fluid">your personal pickup line assistant</p>
+                        <p>by <a target="_blank" href="https://github.com/vardaro">@vardaro</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.Mask-->
+</body>
 
-        <!-- Add your site or application content here -->
-        <h1>Meet wingbot.js</h1>
-        <p>By <a href="https://github.com/vardaro" target="blank">Anthony Vardaro</a></p>
-    </body>
 </html>
