@@ -102,12 +102,12 @@ app.post("/sms", function (req, res) {
     reddit.getSubreddit('PickupLines')
       .search({ query: reqBody, time: 'all', sort: 'relavance' })
       .then((submissions) => {
-        if (submissions) { // check if the query returns anything
+        if (submissions.length) { // check if the query is truthy
           const curSub = extract(submissions);
-          reddit.getSubmission(curSub.id) // focus one 1 submission
+          reddit.getSubmission(curSub.id) // focus one submission
             .expandReplies({ limit: Infinity, depth: Infinity })
             .then((withReplies) => {
-              if (withReplies.comments) {
+              if (withReplies.comments.length) { // truthy check the comments
                 console.log(withReplies.comments);
                 const curRep = extract(withReplies.comments);
                 const twimlResp = `${curSub.title}\n\n${curRep.body}`;
