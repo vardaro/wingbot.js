@@ -20,18 +20,11 @@ const client = new twitter({
   access_token_key: '2610777535-8EYut0cv8uxi6CI5lctqhgqYGgHJIISrKa5eEpH',
   access_token_secret: '0OS1TkU3gnyqsEN2m1WtRgZPmo8zsuUVjNC9WkEyzRjzF'
 });
-const statusParams = {
-  screen_name: 'pickupIines',
-  trim_user: true,
-  count: 50,
-  exclude_replies: true,
-  include_rts: false
-}
 const tweeters = [
   'pickupIines',
   'pickuplines',
   'smplepickupInes'
-]
+];
 const subreddits = [
   'ShittyPickupLines',
   'PickupLines'
@@ -63,7 +56,6 @@ app.post("/sms", function (req, res) {
         .then((submissions) => {
           const line = cut(submissions);
 
-          console.log(line);
           const message = twiml.message();
           const mesBody = line.selftext ?
             `${line.title}\n\n${line.selftext}` :
@@ -100,8 +92,28 @@ app.post("/sms", function (req, res) {
       })
     }
   } else {
-    twiml.message('girls name');
-    res.end(twiml.toString());
+    console.log('GIRLS NAME'); // i think
+
+    reddit.getSubreddit('PickupLines')
+      .search({ query: curBody, time: 'all', sort: 'relavance' })
+      .then((submissions) => {
+        if (submissions) { // check if the query returns anything
+          const curSub = cut(submissions);
+          reddit.getSubmission(curSub.id) // focus one 1 submission
+            .expandReplies({ limit: Infinity, depth: Infinity })
+            .then((withReplies) => {
+              console.log(withReplies);
+              const curRep = cut(withReplies.comments);
+              const twimlResp = `${curSub.title}\n\n${curRep.body}`;
+              twiml.message(twimlResp);
+            });
+        } else {
+          twiml.message('idk lol');
+        }
+        res.writeHead(OK, { 'Content-Type': 'text/xml' });
+        res.end(twiml.toString());
+        console.log('RESP SENT');
+      });
   }
   console.log('RES END\n');
 });
