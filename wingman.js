@@ -47,8 +47,10 @@ app.post("/sms", function (req, res) {
       });
   } else if (reqBody === 'help') {
     twiml.message('helping u out');
+    res.send(twiml.toString());
   } else {
     twiml.message('girls name');
+    res.send(twiml.toString());
   }
   console.log('RES END');
 });
