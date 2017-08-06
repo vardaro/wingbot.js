@@ -44,7 +44,7 @@ app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
   const reqBody = req.body.Body.trim().toLowerCase();
 
-  if (reqBody === 'shitty' || reqBody === 'help') {
+  if (reqBody === 'shitty' || reqBody === 'pls') {
     console.log('POST: SHITTY');
     const curPlat = extract(platforms);
 
