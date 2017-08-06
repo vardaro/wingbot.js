@@ -37,7 +37,7 @@ app.post("/sms", function (req, res) {
         const line = derive(submission);
 
         console.log(line);
-        const {message} = twiml;
+        const message = twiml.message();
         const mesBody = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
