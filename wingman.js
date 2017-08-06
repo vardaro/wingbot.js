@@ -39,7 +39,7 @@ app.post("/sms", function (req, res) {
         const mes = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
-        twiml.message(line.title);
+        twiml.message(mes);
         console.log(mes);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
         res.end(twiml.toString());
