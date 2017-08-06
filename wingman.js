@@ -97,6 +97,7 @@ app.post("/sms", function (req, res) {
     }
   } else {
     console.log('GIRLS NAME'); // i think
+    res.writeHead(OK, { 'Content-Type': 'text/xml' });
 
     reddit.getSubreddit('PickupLines')
       .search({ query: reqBody, time: 'all', sort: 'relavance' })
@@ -111,16 +112,19 @@ app.post("/sms", function (req, res) {
                 const curRep = extract(withReplies.comments);
                 const twimlResp = `${curSub.title}\n\n${curRep.body}`;
                 twiml.message(twimlResp);
+                res.end(twiml.toString());
+                console.log('RESP SENT');
               } else {
                 twiml.message('idk haha :/');
+                res.end(twiml.toString());
+                console.log('RESP SENT');
               }
             });
         } else {
           twiml.message('idk lol');
+          res.end(twiml.toString());
+          console.log('RESP SENT');
         }
-        res.writeHead(OK, { 'Content-Type': 'text/xml' });
-        res.end(twiml.toString());
-        console.log('RESP SENT');
       });
   }
 });
