@@ -25,23 +25,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/sms", function (req, res) {
   const twiml = new MessagingResponse();
   const reqBody = req.body.Body.trim().toLowerCase();
+
   if (reqBody === 'shitty') {
     console.log('POST: SHITTY');
-    const curSub = subreddits[getRandNum(subreddits.length)];
+    const curSub = derive(subreddits);
 
     console.log('GETTING SUB: ' + curSub);
     reddit.getSubreddit(curSub)
       .getTop({ time: 'all' })
       .then((submission) => {
-        console.log(submission.length);
-        const line = submission[getRandNum(submission.length)];
+        const line = derive(submission);
 
         console.log(line);
         const mes = line.selftext ?
           `${line.title}\n\n${line.selftext}` :
           `${line.title}`;
 
-        twiml.message(mes);
+        if (line.url.includes('imgur') || line.url.includes('reddituploads')) {
+          twiml.message.media(line.url);
+        }
+        
+        twiml.message.body(mes);
         console.log(mes);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
         res.end(twiml.toString());
@@ -61,7 +65,7 @@ app.listen(app.get('port'), function () {
   console.log('Node app is running on port', app.get('port'));
 });
 
-// returns random number from 0 to range
-function getRandNum(range) {
-  return Math.floor(Math.random() * range);
+// returns a random object from the arra
+function derive(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
