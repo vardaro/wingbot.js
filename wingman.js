@@ -55,18 +55,17 @@ app.post("/sms", function (req, res) {
         .getTop({ time: 'all' })
         .then((submissions) => {
           const line = cut(submissions);
-
           const message = twiml.message();
+
+          if (line.url.includes('imgur') ||
+              line.url.includes('reddituploads') ||
+              line.url.includes('i.redd.it')) {
+              message.media(line.url); // if media, include media
+            console.log('IMG: ' + line.url);
+          }
           const mesBody = line.selftext ?
             `${line.title}\n\n${line.selftext}` :
             `${line.title}`;
-
-          if (line.url.includes('imgur') ||
-            line.url.includes('reddituploads') ||
-            line.url.includes('i.redd.it')) {
-            message.media(line.url);
-            console.log('IMG: ' + line.url);
-          }
 
           message.body(mesBody);
           console.log(mesBody);
@@ -76,14 +75,13 @@ app.post("/sms", function (req, res) {
         });
     } else if (curPlat === 'Twitter') {
       console.log('TWITTER');
+
       const curUser = cut(tweeters);
       console.log('USER: ' + curUser);
       const request = buildReq(curUser);
-      client.get('statuses/user_timeline', request, (err, tweet, resp) => {
-        if (err) {
-          console.log('WTF');
 
-        };
+      client.get('statuses/user_timeline', request, (err, tweet, resp) => {
+        if (err) console.log('WTF');
         const curTweet = cut(tweet);
         twiml.message(curTweet.text);
         res.writeHead(OK, { 'Content-Type': 'text/xml' });
@@ -95,7 +93,7 @@ app.post("/sms", function (req, res) {
     console.log('GIRLS NAME'); // i think
 
     reddit.getSubreddit('PickupLines')
-      .search({ query: curBody, time: 'all', sort: 'relavance' })
+      .search({ query: reqBody, time: 'all', sort: 'relavance' })
       .then((submissions) => {
         if (submissions) { // check if the query returns anything
           const curSub = cut(submissions);
