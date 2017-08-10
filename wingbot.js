@@ -134,7 +134,7 @@ function run() {
 
                 if (withReplies.comments.length) { // truthy check the comments
                   const curRep = rand(withReplies.comments);
-                  const twimlResp = `${curSub.title}\n\n${curRep.body}`;
+                  const twimlResp = `${curSubmission.title}\n\n${curRep.body}`;
                   console.log(`RESP: ${twimlResp}`);
                   twiml.message(twimlResp);
                   res.end(twiml.toString());
