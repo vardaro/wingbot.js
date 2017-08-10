@@ -72,12 +72,6 @@ function run() {
           .then((submissions) => {
             // grab a random submission
             let line = rand(submissions);
-            while (line.selftext.length > 160) { // cut down the array to find a short line
-              let dex = submissions.indexOf(line);
-              submissions = submissions.splice(dex, 1);
-              line = rand(submissions);
-              console.log("IDK");
-            }
 
             const message = twiml.message();
 
