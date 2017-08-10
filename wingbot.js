@@ -20,12 +20,10 @@ const platforms = [
   'Reddit',
   'Twitter'
 ];
+const throngConfig = { workers: WORKERS, lifetime: Infinity };
 
 // lets gooooo
-throng({
-  workers: WORKERS,
-  lifetime: Infinity,
-}, run);
+throng(throngConfig, run);
 
 // WHERE THE MAGIC HAPPENS.
 function run() {
@@ -62,86 +60,101 @@ function run() {
 
     if (reqBody === 'shitty' || reqBody === 'pls') {
       console.log('POST: SHITTY');
-      const curPlat = extract(platforms);
+      const curPlat = rand(platforms);
 
       if (curPlat === 'Reddit') {
         console.log('REDDIT');
-        const curSub = extract(subreddits);
+        const curSub = rand(subreddits);
         // grabs a subreddit
         console.log('GETTING SUB: ' + curSub);
         reddit.getSubreddit(curSub)
           .getTop({ time: 'all', limit: 100 })
           .then((submissions) => {
             // grab a random submission
-            let line = extract(submissions);
+            let line = rand(submissions);
             while (line.selftext.length > 160) { // cut down the array to find a short line
               let dex = submissions.indexOf(line);
               submissions = submissions.splice(dex, 1);
-              line = extract(submissions);
+              line = rand(submissions);
               console.log("IDK");
             }
+
             const message = twiml.message();
 
+            // attach media if present
             if (line.url.includes('imgur') || line.url.includes('reddituploads') || line.url.includes('i.redd.it')) {
-              message.media(line.url); // if media, include media
+              message.media(line.url);
               console.log('IMG: ' + line.url);
             }
+
             const mesBody = line.selftext ?
               `${line.title}\n\n${line.selftext}` :
               `${line.title}`;
+
             // send
             message.body(mesBody);
-            console.log(mesBody);
+            console.log(`RESP: ${mesBody}`);
             res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
             res.end(twiml.toString());
             console.log('RESP SENT');
           });
-      } else if (curPlat === 'Twitter') { // req to twitter
+      } else if (curPlat === 'Twitter') {
         console.log('TWITTER');
+
         // get a user
-        const curUser = extract(tweeters);
+        const curUser = rand(tweeters);
         console.log('USER: ' + curUser);
-        const request = buildReq(curUser);
+        const request = {
+          screen_name: curUser,
+          trim_user: true,
+          count: 100,
+          exclude_replies: true,
+          include_rts: false
+        };
+
         // make the request
         client.get('statuses/user_timeline', request, (err, tweet, resp) => {
           if (err) console.log('WTF');
+
           // get a tweet
-          const curTweet = extract(tweet);
+          const curTweet = rand(tweet);
           twiml.message(curTweet.text);
+          console.log(`RESP: ${curTweet.text}`);
           res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
           res.end(twiml.toString());
           console.log('RESP SENT');
         });
       }
     } else {
-      console.log(`GIRLS NAME: ${reqBody}`); // i think
+      console.log(`GIRLS NAME: ${reqBody}`);
       res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
 
       reddit.getSubreddit('PickupLines')
         .search({ query: reqBody, time: 'all', sort: 'relavance' })
         .then((submissions) => {
           if (submissions.length) { // check if the query is truthy
-            const curSub = extract(submissions);
-            reddit.getSubmission(curSub.id) // focus one submission
+            const curSubmission = rand(submissions);
+            reddit.getSubmission(curSubmission.id) // focus one submission
               .expandReplies({ limit: Infinity, depth: Infinity })
               .then((withReplies) => {
+
                 if (withReplies.comments.length) { // truthy check the comments
-                  console.log(withReplies.comments);
-                  const curRep = extract(withReplies.comments);
+                  const curRep = rand(withReplies.comments);
                   const twimlResp = `${curSub.title}\n\n${curRep.body}`;
+                  console.log(`RESP: ${twimlResp}`);
                   twiml.message(twimlResp);
                   res.end(twiml.toString());
                   console.log('RESP SENT');
                 } else {
                   twiml.message('ehh');
                   res.end(twiml.toString());
-                  console.log('RESP SENT');
+                  console.log('Post found without comments');
                 }
               });
           } else {
             twiml.message(`idk`);
             res.end(twiml.toString());
-            console.log('RESP SENT');
+            console.log('No results from query');
           }
         });
     }
@@ -155,18 +168,7 @@ function run() {
   });
 
   // returns a random object from the arra
-  function extract(arr) {
+  function rand(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
-  }
-  // returns an object of twitter api params 
-  // with a dynamic screen_name
-  function buildReq(tweeter) {
-    return {
-      screen_name: tweeter,
-      trim_user: true,
-      count: 100,
-      exclude_replies: true,
-      include_rts: false
-    }
   }
 }
