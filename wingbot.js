@@ -93,7 +93,7 @@ function run() {
             console.log('RESP SENT');
           });
       } else if (curPlat === 'Twitter') {
-        console.log('TWITTER');
+        console.log('PLATFORM: TWITTER');
 
         // get a user
         const curUser = rand(tweeters);
