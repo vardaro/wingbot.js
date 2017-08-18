@@ -1,0 +1,20 @@
+{
+    "shitty": {
+        "proc": ["shitty", "pls"],
+        "args": null,
+        "desc": "Sends a random shitty pickup line",
+        "file": "shitty.js"
+    },
+    "protip": {
+        "proc": ["lpt", "lifeprotip", "shittylpt"],
+        "args": null,        
+        "desc": "Sends life pro tip",
+        "file": "lpt.js"
+    },
+    "meme": {
+        "proc": ["meme"],
+        "args": ["src"],
+        "desc": "Sends meme, pass subreddit to specify meme source!",
+        "file": "meme.js"
+    }
+}
