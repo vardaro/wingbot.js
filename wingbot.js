@@ -1,4 +1,3 @@
-// i hope nobody tries to read this
 'use strict'
 
 const throng = require('throng');
@@ -25,7 +24,6 @@ const throngConfig = { workers: WORKERS, lifetime: Infinity };
 // lets gooooo
 throng(throngConfig, run);
 
-// WHERE THE MAGIC HAPPENS.
 function run() {
   const express = require('express');
   const twitter = require('twitter');
@@ -37,6 +35,13 @@ function run() {
   const { env } = process;
   const NO_MAGIC_NUMBERS_HEADASS = 200;
 
+  class Website {
+    constructor(name, srcs, auth) {
+      this.name = name;
+      this.srcs = srcs;
+      this.auth = auth;
+    }
+  }
   const reddit = new snoowrap({
     clientId: env.clientId,
     clientSecret: env.clientSecret,
@@ -58,7 +63,8 @@ function run() {
     const twiml = new MessagingResponse();
     const reqBody = req.body.Body.trim().toLowerCase();
 
-    if (reqBody === 'shitty' || reqBody === 'pls') {
+    // words to make bot proc
+    if (reqBody === 'shitty' || reqBody === 'pls' || reqBody === 'help') {
       console.log('POST: SHITTY');
       const curPlat = rand(platforms);
 
