@@ -33,15 +33,8 @@ function run() {
   const app = express();
 
   const { env } = process;
-  const NO_MAGIC_NUMBERS_HEADASS = 200;
+  const OK = 200;
 
-  class Website {
-    constructor(name, srcs, auth) {
-      this.name = name;
-      this.srcs = srcs;
-      this.auth = auth;
-    }
-  }
   const reddit = new snoowrap({
     clientId: env.clientId,
     clientSecret: env.clientSecret,
@@ -64,13 +57,18 @@ function run() {
     const reqBody = req.body.Body.trim().toLowerCase();
 
     // words to make bot proc
-    if (reqBody === 'shitty' || reqBody === 'pls' || reqBody === 'help') {
+    if (reqBody === 'shitty' || reqBody === 'pls') {
       console.log('POST: SHITTY');
+
+      //get a random platform (reddit or twitter)
       const curPlat = rand(platforms);
 
       if (curPlat === 'Reddit') {
         console.log('REDDIT');
+
+        // get a random subreddit
         const curSub = rand(subreddits);
+
         // grabs a subreddit
         console.log('GETTING SUB: ' + curSub);
         reddit.getSubreddit(curSub)
@@ -94,14 +92,14 @@ function run() {
             // send
             message.body(mesBody);
             console.log(`RESP: ${mesBody}`);
-            res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
+            res.writeHead(OK, { 'Content-Type': 'text/xml' });
             res.end(twiml.toString());
             console.log('RESP SENT');
           });
       } else if (curPlat === 'Twitter') {
         console.log('PLATFORM: TWITTER');
 
-        // get a user
+        // get a random twitter user
         const curUser = rand(tweeters);
         console.log('USER: ' + curUser);
         const request = {
@@ -120,33 +118,38 @@ function run() {
           const curTweet = rand(tweet);
           twiml.message(curTweet.text);
           console.log(`RESP: ${curTweet.text}`);
-          res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
+          res.writeHead(OK, { 'Content-Type': 'text/xml' });
           res.end(twiml.toString());
           console.log('RESP SENT');
         });
       }
     } else {
+      // if the request does not include a proc word, just assume its a girls name i guess lol
       console.log(`GIRLS NAME: ${reqBody}`);
-      res.writeHead(NO_MAGIC_NUMBERS_HEADASS, { 'Content-Type': 'text/xml' });
+      res.writeHead(OK, { 'Content-Type': 'text/xml' });
 
       reddit.getSubreddit('PickupLines')
         .search({ query: reqBody, time: 'all', sort: 'relavance' })
         .then((submissions) => {
           if (submissions.length) { // check if the query is truthy
+
+            // get a random submission from query results
             const curSubmission = rand(submissions);
             reddit.getSubmission(curSubmission.id) // focus one submission
               .expandReplies({ limit: Infinity, depth: Infinity })
               .then((withReplies) => {
 
                 if (withReplies.comments.length) { // truthy check the comments
+
+                  // get a random respose from the post
                   const curRep = rand(withReplies.comments);
-                  const twimlResp = `${curSubmission.title}\n\n${curRep.body}`;
+                  const twimlResp = `${curSubmission.title}\n${curSubmission.selftext}\n\n${curRep.body}`;
                   console.log(`RESP: ${twimlResp}`);
                   twiml.message(twimlResp);
                   res.end(twiml.toString());
                   console.log('RESP SENT');
                 } else {
-                  twiml.message('ehh');
+                  twiml.message('nothing good');
                   res.end(twiml.toString());
                   console.log('Post found without comments');
                 }
