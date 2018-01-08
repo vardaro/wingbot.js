@@ -21,7 +21,6 @@ const platforms = [
 ];
 const throngConfig = { workers: WORKERS, lifetime: Infinity };
 
-// lets gooooo
 throng(throngConfig, run);
 
 function run() {
