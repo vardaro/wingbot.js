@@ -57,21 +57,21 @@ function run() {
 
     // words to make bot proc
     if (reqBody === 'shitty' || reqBody === 'pls' || reqBody === 'smash') {
-      
+
       console.log('POST: SHITTY');
 
       //get a random platform (reddit or twitter)
       const curPlat = rand(platforms);
 
       if (curPlat === 'Reddit') {
-        sendRedditPickupLine(req, twiml);
+        sendRedditPickupLine(res, twiml);
       } else if (curPlat === 'Twitter') {
-        sendTwitterPickupLine(req, twiml);
+        sendTwitterPickupLine(res, twiml);
       }
 
     } else {
       // if the request does not include a proc word, just assume its a girls name i guess lol
-      sendPunPickupLine(req, twiml);
+      sendPunPickupLine(res, twiml);
     }
   });
 
@@ -123,7 +123,7 @@ function run() {
       });
   }
 
-  function sendTwitterPickupLine(req, twiml) {
+  function sendTwitterPickupLine(res, twiml) {
     console.log('PLATFORM: TWITTER');
 
     // get a random twitter user
@@ -151,7 +151,7 @@ function run() {
     });
   }
 
-  function sendPunPickupLine(req, twiml) {
+  function sendPunPickupLine(res, twiml) {
     console.log(`GIRLS NAME: ${reqBody}`);
     res.writeHead(OK, { 'Content-Type': 'text/xml' });
 
