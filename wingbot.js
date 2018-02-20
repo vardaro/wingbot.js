@@ -56,7 +56,7 @@ function run() {
     const reqBody = req.body.Body.trim().toLowerCase();
 
     // words to make bot proc
-    if (reqBody === 'shitty' || reqBody === 'pls') {
+    if (reqBody === 'shitty' || reqBody === 'pls' || reqBody == 'smash') {
       console.log('POST: SHITTY');
 
       //get a random platform (reddit or twitter)
@@ -84,6 +84,7 @@ function run() {
               console.log('IMG: ' + line.url);
             }
 
+            // if self text exists, include self text in twiml  message
             const mesBody = line.selftext ?
               `${line.title}\n\n${line.selftext}` :
               `${line.title}`;
@@ -173,4 +174,5 @@ function run() {
   function rand(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
+
 }
