@@ -78,6 +78,7 @@ function run() {
   app.get('*', function (req, res) {
     res.sendFile(__dirname + '/src/index.html');
   });
+
   app.listen(app.get('port'), function () {
     console.log('Node app is running on port', app.get('port'));
   });
@@ -158,7 +159,7 @@ function run() {
     reddit.getSubreddit('PickupLines')
       .search({ query: reqBody, time: 'all', sort: 'relavance' })
       .then((submissions) => {
-        if (submissions.length) { // check if the query is truthy
+        if (submissions.length) { // check if the query yields any results
 
           // get a random submission from query results
           const curSubmission = rand(submissions);
