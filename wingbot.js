@@ -71,7 +71,7 @@ function run() {
 
     } else {
       // if the request does not include a proc word, just assume its a girls name i guess lol
-      sendPunPickupLine(res, twiml);
+      sendPunPickupLine(reqBody, res, twiml);
     }
   });
 
@@ -123,7 +123,7 @@ function run() {
       });
   }
 
-  function sendTwitterPickupLine(res, twiml) {
+  function sendTwitterPickupLine(reqBody, res, twiml) {
     console.log('PLATFORM: TWITTER');
 
     // get a random twitter user
