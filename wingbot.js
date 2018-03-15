@@ -124,7 +124,7 @@ function run() {
       });
   }
 
-  function sendTwitterPickupLine(reqBody, res, twiml) {
+  function sendTwitterPickupLine(res, twiml) {
     console.log('PLATFORM: TWITTER');
 
     // get a random twitter user
@@ -152,7 +152,7 @@ function run() {
     });
   }
 
-  function sendPunPickupLine(res, twiml) {
+  function sendPunPickupLine(reqBody, res, twiml) {
     console.log(`GIRLS NAME: ${reqBody}`);
     res.writeHead(OK, { 'Content-Type': 'text/xml' });
 
